@@ -1,4 +1,5 @@
-import {Graphics} from "pixi.js";
+
+import {Shape} from "../view/Shape";
 
 /**
  * Enum representing different types of shapes.
@@ -10,13 +11,13 @@ export enum ShapeType {
     Square = 4,
     Pentagon = 5,
     Hexagon = 6,
-    Circle = 0,
-    Ellipse = -1,
-    Random = 99
+    Circle = 7,
+    Ellipse = 8,
+    Random = 9
 }
 
 // Interface representing the shape configuration used for rendering.
-export interface Shape {
+export interface ShapeConfig {
     type: ShapeType;
     color: number;
     x: number;
@@ -28,7 +29,7 @@ export interface Shape {
 export class ShapeModel {
 
     shapesPerSecond: number = 1;
-    shapes: Graphics[] = [];
+    shapes: Shape[] = [];
     gravity: number = 1;
 
     constructor() {
@@ -53,17 +54,17 @@ export class ShapeModel {
 
     /**
      * Add a shape to the model's shape list.
-     * @param {Graphics}shape
+     * @param {Shape}shape
      */
-    setShapes(shape: Graphics) {
+    setShapes(shape: Shape) {
         this.shapes.push(shape);
     }
 
     /**
      * Get all current shapes from the model.
-     * @return {Graphics[]}
+     * @return {Shape[]}
      */
-    getShapes(): Graphics[] {
+    getShapes(): Shape[] {
         return this.shapes;
     }
 

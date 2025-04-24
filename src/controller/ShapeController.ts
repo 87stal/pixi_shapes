@@ -1,6 +1,10 @@
 import PIXI, {Graphics} from 'pixi.js';
-import {ShapeModel, ShapeType} from "../model/ShapeModel";
-import {ShapeView, ShapeWithArea} from "../view/ShapeView";
+import {ShapeModel} from "../model/ShapeModel";
+import {ShapeView} from "../view/ShapeView";
+import {Shape} from "../view/Shape";
+
+const GRAVITY_STEP = 0.2;
+const SHAPE_PER_SEC_STEP = 1;
 
 export class AppController {
     app: PIXI.Application;
@@ -63,7 +67,7 @@ export class AppController {
 
         decreaseRate?.addEventListener('click', () => {
             let shapePerSec = this.model.getShapePerSecond();
-            if (shapePerSec > 1) {
+            if (shapePerSec > SHAPE_PER_SEC_STEP) {
                 shapePerSec--;
                 this.model.setShapePerSecond(shapePerSec);
                 shapePerSecValue.textContent = shapePerSec.toString();
@@ -73,16 +77,16 @@ export class AppController {
 
         increaseGravity?.addEventListener('click', () => {
             let currentGravity = this.model.getGravity();
-            currentGravity += 0.2;
-            this.model.setGravity(currentGravity);
-            gravityValue.textContent = currentGravity.toFixed(1);
+                currentGravity += GRAVITY_STEP;
+                this.model.setGravity(currentGravity);
+                gravityValue.textContent = currentGravity.toFixed(1);
         });
 
         decreaseGravity?.addEventListener('click', () => {
             let currentGravity = this.model.getGravity();
-            if (currentGravity > 0.2) {
-                currentGravity -= 0.2;
-                this.model.setGravity(currentGravity);
+            if (currentGravity > GRAVITY_STEP) {
+                currentGravity -= GRAVITY_STEP;
+                this.model.setGravity(parseFloat(currentGravity.toFixed(1)));
                 gravityValue.textContent = currentGravity.toFixed(1);
             }
         });
@@ -100,7 +104,7 @@ export class AppController {
      * @param {number} y
      */
     generateShape(x?: number, y?: number) {
-        let shape = this.view.createShape(x, y);
+        let shape: Shape = this.view.createShape(x, y);
         this.model.setShapes(shape);
         shape.on("pointerdown", () => {
             shape.removeFromParent();
@@ -116,7 +120,7 @@ export class AppController {
      * @param {number} delta
      */
     update(delta: number) {
-        const shapes = this.model.getShapes();
+        const shapes: Shape[] = this.model.getShapes();
         const gravity = this.model.getGravity();
         this.view.update(shapes, gravity * delta);
 
@@ -135,8 +139,8 @@ export class AppController {
 
         let totalArea = 0;
         shapes.forEach((shape) => {
-            const shapeWithArea = shape as ShapeWithArea;
-            if (shapeWithArea.getArea) {
+            const shapeWithArea = shape as Shape;
+            if (shape.getArea()) {
                 totalArea += shapeWithArea.getArea();
             }
         });
