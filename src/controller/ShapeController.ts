@@ -139,9 +139,8 @@ export class AppController {
 
         let totalArea = 0;
         shapes.forEach((shape) => {
-            const shapeWithArea = shape as Shape;
             if (shape.getArea()) {
-                totalArea += shapeWithArea.getArea();
+                totalArea += shape.getArea();
             }
         });
 

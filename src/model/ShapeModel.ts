@@ -4,7 +4,7 @@ import {Shape} from "../view/Shape";
 /**
  * Enum representing different types of shapes.
  * - The number corresponds to the number of sides for polygons.
- * - Circle is 0, Ellipse is -1, and Random represents custom irregular shapes.
+ * - Circle is 7, Ellipse is 8, and Random represents custom irregular shapes.
  */
 export enum ShapeType {
     Triangle = 3,
